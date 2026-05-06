@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertApplicationSchema } from "@shared/schema";
-import { setupAuth, registerAuthRoutes } from "./replit_integrations/auth";
+// import { setupAuth, registerAuthRoutes } from "./replit_integrations/auth";
 
 function getUserId(req: any): string {
   if (req.user?.claims?.sub) return req.user.claims.sub;
@@ -15,8 +15,17 @@ export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
-  await setupAuth(app);
-  registerAuthRoutes(app);
+  // await setupAuth(app);
+  // registerAuthRoutes(app);
+  app.get("/api/auth/user", async (_req, res) => {
+  res.json({
+    id: "anon_default",
+    email: "demo@example.com",
+    firstName: "Demo",
+    lastName: "User",
+    profileImageUrl: null,
+  });
+});
 
   app.get("/api/applications", async (req, res) => {
     const userId = getUserId(req);
